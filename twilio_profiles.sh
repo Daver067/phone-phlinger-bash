@@ -54,7 +54,7 @@ test= twilio api:core:incoming-phone-numbers:update \
 
 # to delete
 #twilio api:serverless:v1:services:remove \
-#    --sid ZS9142474718ef612a592e31d1a1c2ca79 
+#    --sid ZS8349c6be095bdd1a3e3769ba879f6feb 
 
 
 #run this script
