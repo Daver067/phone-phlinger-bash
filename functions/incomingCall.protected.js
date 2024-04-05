@@ -46,7 +46,6 @@ exports.handler = async function (context, event, callback) {
     if (asset.settings.client_answering_machine_detection === "Enable") {
       machineDetectionUrl = "machineDetection";
     }
-
     // Initialize the twiml to respond
     let response = new Twilio.twiml.VoiceResponse();
 
@@ -58,15 +57,14 @@ exports.handler = async function (context, event, callback) {
       action: `/voicemail`, // Where the call will go after the call is completed, regardless of how it completes
       record: asset.settings.record_client || "do-not-record", // Record both ends of the dialed call "do-not-record" is other option
       recordingStatusCallbackEvent: ["in-progress", "completed"], // will ping the address below for both statements
-      recordingStatusCallback: `https://serverless-phone-phlinger-2186-dev.twil.io/recordings`, // what to do with the recordings
+      recordingStatusCallback: `${asset.settings.url}/recordings`, // what to do with the recordings
     });
     dial.number(asset.client.phone_number, {
       url: "/callWhisper", // When the number dialed answered, send them here.
       machineDetection: "Enable", // Checks for answering machine to answer... need this or recording to know if it got answered.
-      amdStatusCallback: `https://serverless-phone-phlinger-2186-dev.twil.io/${machineDetectionUrl}`, // What to do when the machine detection makes a decision
+      amdStatusCallback: `${asset.settings.url}/${machineDetectionUrl}`, // What to do when the machine detection makes a decision
       statusCallbackEvent: ["initiated", "answered", "completed"], // states in which to send callback to events
-      statusCallback:
-        "https://serverless-phone-phlinger-2186-dev.twil.io/events", // url for callbacks in above
+      statusCallback: `${asset.settings.url}/events`, // url for callbacks in above
       statusCallbackMethod: "POST", // post request, not get
     });
 

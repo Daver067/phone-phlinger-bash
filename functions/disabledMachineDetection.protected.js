@@ -10,9 +10,6 @@ exports.handler = async function (context, event, callback) {
   if (event.AnsweredBy == "machine_start") {
     callback(null, response);
   } else {
-    // if it is unknown or human we will assume the client answered
-    // current_call.outcome = "Call Answered by Client"
-    //TODO I dont think I need this else statement. I can update this in the recording initiated section
     try {
       // need to go deep to find the proper call log identifier
       const ParentCallSid = await client
