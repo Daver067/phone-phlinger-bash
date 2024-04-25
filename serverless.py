@@ -20,3 +20,6 @@ proc2.communicate()
 
 print('code: ' + str(proc.returncode))
 print('code: ' + str(proc2.returncode))
+
+# The plan here is to change the os.environ sid and auth to be inputs to this program.
+# That way anyone can create a serverless function.
