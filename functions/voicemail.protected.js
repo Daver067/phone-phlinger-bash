@@ -23,7 +23,11 @@ exports.handler = async function (context, event, callback) {
       return callback(null, response);
     }
     // default is to take a message
-    response.say("sorry we missed you, please leave us a message");
+    asset.settings.voicemail_recording_or_text === "text"
+      ? response.say(asset.settings.voice_mail || "Please leave us a message")
+      : response.play(
+          `https://test-phlinger-bucket.s3.us-east-2.amazonaws.com/${asset.settings.voice_mail}`
+        );
     // begin a voicemail recording.
     response.record({
       timeout: 30, //TODO figure out what this value is for?

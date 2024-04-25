@@ -49,7 +49,11 @@ exports.handler = async function (context, event, callback) {
     // Initialize the twiml to respond
     let response = new Twilio.twiml.VoiceResponse();
 
-    response.say(asset.settings.caller_greeting || "");
+    asset.settings.caller_greeting_recording_or_text === "text"
+      ? response.say(asset.settings.caller_greeting || "")
+      : response.play(
+          `https://test-phlinger-bucket.s3.us-east-2.amazonaws.com/${asset.settings.caller_greeting}`
+        );
 
     let dial = response.dial({
       answerOnBridge: "true", // will ring until client answers

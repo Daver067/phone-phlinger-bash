@@ -26,14 +26,20 @@ exports.handler = async function (context, event, callback) {
       timeout: 5,
     });
     // the message whispered to the client, or a default
-    gather.say(asset.settings.client_whisper || "Press 1 to accept call");
+    asset.settings.client_whisper_recording_or_text === "text"
+      ? gather.say(asset.settings.client_whisper || "Press 1 to accept call")
+      : gather.play(
+          `https://test-phlinger-bucket.s3.us-east-2.amazonaws.com/${asset.settings.client_whisper}`
+        );
     // if gather isnt done, it will hangup
     response.hangup();
   } else {
     // The Asset doesn't ask for a gather, so we will just whisper the message
-    response.say(
-      asset.settings.client_whisper || `This is a call forward from ` //${event.CalledVia}
-    );
+    asset.settings.client_whisper_recording_or_text === "text"
+      ? response.say(asset.settings.client_whisper || "Press 1 to accept call")
+      : response.play(
+          `https://test-phlinger-bucket.s3.us-east-2.amazonaws.com/${asset.settings.client_whisper}`
+        );
   }
   return callback(null, response);
 };
