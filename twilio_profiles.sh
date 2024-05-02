@@ -49,12 +49,12 @@ test= twilio api:core:incoming-phone-numbers:update \
 
 # to change to ui-editable
 #twilio api:serverless:v1:services:update \
-#    --sid xxxxxxxxxxxxxxxxxxxxxxx \
+#    --sid ZS75489d15d55c02de14d460caaa1bab7d \
 #    --ui-editable
 
 # to delete
 #twilio api:serverless:v1:services:remove \
-#    --sid ZS8349c6be095bdd1a3e3769ba879f6feb 
+#    --sid ZSce121df5070b1b8cea95031c25731b6f 
 
 
 #run this script

@@ -6,8 +6,8 @@ exports.handler = async (context, event, callback) => {
     // Make all of the maps needed for the project This is only needed once per account
     const assets = await sync.maps.create({ uniqueName: "assets" });
     const call_logs = await sync.maps.create({ uniqueName: "call_logs" });
-    const asset_settings = await sync.maps.create({
-      uniqueName: "asset_settings",
+    const phone_numbers = await sync.maps.create({
+      uniqueName: "phone_numbers",
     });
     const clients = await sync.maps.create({ uniqueName: "clients" });
     return callback(null, newMapItem);
