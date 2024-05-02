@@ -40,7 +40,7 @@ do
     fi
 lastword=$word
 done
-
+echo $voice_domain
 # This will update the phone number to the new service
 test= twilio api:core:incoming-phone-numbers:update \
     --sid $sid \
@@ -54,7 +54,7 @@ test= twilio api:core:incoming-phone-numbers:update \
 
 # to delete
 #twilio api:serverless:v1:services:remove \
-#    --sid ZSce121df5070b1b8cea95031c25731b6f 
+#    --sid ZSfa7881333f99d5ca76dbd140e8213171 
 
 
 #run this script
