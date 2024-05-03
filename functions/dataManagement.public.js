@@ -28,6 +28,9 @@ exports.handler = async (context, event, callback) => {
                 keys[item.data.call_sid] = item.data;
               }
             });
+          })
+          .catch((err) => {
+            throw err;
           });
         response.setBody(keys);
         // Return a success response using the callback function
@@ -41,6 +44,9 @@ exports.handler = async (context, event, callback) => {
             assets.forEach((asset) => {
               keys["assets"][asset.data.phone_number] = asset.data;
             });
+          })
+          .catch((err) => {
+            throw err;
           });
         await sync
           .maps("phone_numbers")
@@ -52,6 +58,9 @@ exports.handler = async (context, event, callback) => {
               keys["phone_numbers"][phone_number.data.phone_number] =
                 phone_number.data;
             });
+          })
+          .catch((err) => {
+            throw err;
           });
         await sync
           .maps("clients")
@@ -62,6 +71,9 @@ exports.handler = async (context, event, callback) => {
               // everything is indexed by its phone number except call_logs
               keys["clients"][client.data.phone_number] = client.data;
             });
+          })
+          .catch((err) => {
+            throw err;
           });
         response.setBody(keys);
         // Return a success response using the callback function
@@ -69,8 +81,9 @@ exports.handler = async (context, event, callback) => {
       }
     } catch (error) {
       // Be sure to log and return any errors that occur!
-      console.error("Sync Error: ", error);
-      return callback(error);
+      response.setBody(`${error}`); // needs to be a string
+      response.setStatusCode(404);
+      return callback(null, response);
     }
   }
   if (event.method === "delete") {
@@ -81,68 +94,92 @@ exports.handler = async (context, event, callback) => {
       return callback(null, response);
     } catch (error) {
       // Be sure to log and return any errors that occur!
-      console.error("Sync Error: ", error);
-      return callback(error);
+      response.setBody(`${error}`); // needs to be a string
+      response.setStatusCode(404);
+      return callback(null, response);
     }
   }
   if (event.method === "create") {
     // I need to create a mapItem
     try {
       if (event.map === "assets") {
-        await sync.maps(event.map).syncMapItems.create({
-          key: event.item.phone_number,
-          data: {
-            name: event.item.name,
-            phone_number: event.item.phone_number,
-            email: event.item.email,
-            client: event.item.client,
-            settings: event.item.settings,
-          },
-        });
+        await sync
+          .maps(event.map)
+          .syncMapItems.create({
+            key: event.item.phone_number,
+            data: {
+              name: event.item.name,
+              phone_number: event.item.phone_number,
+              email: event.item.email,
+              client: event.item.client,
+              settings: event.item.settings,
+            },
+          })
+          .catch((err) => {
+            throw err;
+          });
       }
       if (event.map === "phone_numbers") {
-        await sync.maps(event.map).syncMapItems.create({
-          key: event.item.phone_number,
-          data: {
-            name: event.item.name,
-            phone_number: event.item.phone_number,
-          },
-        });
+        await sync
+          .maps(event.map)
+          .syncMapItems.create({
+            key: event.item.phone_number,
+            data: {
+              name: event.item.name,
+              phone_number: event.item.phone_number,
+            },
+          })
+          .catch((err) => {
+            throw err;
+          });
       }
       if (event.map === "clients") {
-        await sync.maps(event.map).syncMapItems.create({
-          key: event.item.phone_number,
-          data: {
-            name: event.item.name,
-            phone_number: event.item.phone_number,
-            email: event.item.email,
-          },
-        });
+        await sync
+          .maps(event.map)
+          .syncMapItems.create({
+            key: event.item.phone_number,
+            data: {
+              name: event.item.name,
+              phone_number: event.item.phone_number,
+              email: event.item.email,
+            },
+          })
+          .catch((err) => {
+            throw err;
+          });
       }
       // shouldn't have to create a call log with the front end.
       response.setBody({ success: "create successful" });
       return callback(null, response);
     } catch (error) {
       // Be sure to log and return any errors that occur!
-      console.error("Sync Error: ", error);
-      return callback(error);
+      response.setBody(`${error}`); // needs to be a string
+      response.setStatusCode(404);
+      return callback(null, response);
     }
   }
   if (event.method === "update") {
     try {
       // This works for settings for sure...
       //TODO ensure this works with phone number edit
-      await sync.maps(event.map).syncMapItems(event.item.phone_number).update({
-        data: event.item,
-      });
+      await sync
+        .maps(event.map)
+        .syncMapItems(event.item.phone_number)
+        .update({
+          data: event.item,
+        })
+        .catch((err) => {
+          throw err;
+        });
 
       // Return a success response using the callback function
       response.setBody({ success: "create successful" });
       return callback(null, response);
     } catch (error) {
       // Be sure to log and return any errors that occur!
-      console.error("Sync Error: ", error);
-      return callback(error);
+      response.setBody(`${error}`); // needs to be a string
+      response.setStatusCode(404);
+      return callback(null, response);
     }
   } else return callback();
 };
