@@ -13,4 +13,4 @@ expect eof
 
 
 # to run this file use code below
-#./expect_twilio_login.sh {SID} {AUTH} hihihi
+#./expect_twilio_login.sh {SID} {AUTH} {profile}

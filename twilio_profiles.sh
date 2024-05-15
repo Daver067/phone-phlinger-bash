@@ -40,7 +40,7 @@ do
     fi
 lastword=$word
 done
-echo $voice_domain
+echo "profile - $1       domain - $voice_domain" >> profiles.txt
 # This will update the phone number to the new service
 test= twilio api:core:incoming-phone-numbers:update \
     --sid $sid \
