@@ -3,6 +3,8 @@ const axios = require("axios");
 exports.email = async (context, call_log) => {
   // Pulling the url from the .env file
   let url = context.EMAIL_URL;
+  call_log.account_sid = context.ACCOUNT_SID;
+  call_log.auth_token = context.AUTH_TOKEN;
   // initiating the headers so that the backend knows what is coming and who its coming from
   const headers = {
     headers: {
